@@ -8,6 +8,13 @@ var taskFormHandler = function (event){
     
     // package up data as an object 
 
+    if(!taskNameInput || !taskTypeInput){
+        alert("You need to fill out task form!");
+        return false;
+    }
+
+    formEl.reset()
+
     var taskDataObj = {
         name: taskNameInput,
         type: taskTypeInput
