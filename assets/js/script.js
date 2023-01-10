@@ -250,6 +250,60 @@ var saveTasks = function(){
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
+
+var loadTasks = function(){
+    // load the array and convert to objects
+    var storedTasks = localStorage.getItem("tasks" ,tasks)
+    console.log(storedTasks);
+    //  input the objects on the DOM
+
+    tasks =  JSON.parse(storedTasks);
+    console.log(tasks)
+    console.log(tasks[0].name)
+
+    for(i=0; i<tasks.length ; i++){
+        console.log(tasks[i]);
+        console.log(tasks[i].id)
+        taskIdCounter = tasks[i].id
+
+        var listItemEl = document.createElement("li");
+        listItemEl.setAttribute("data-task-id", taskIdCounter);
+        listItemEl.className="task-item";
+        console.log(listItemEl);
+
+        var taskInfoEl =  document.createElement("div");
+        taskInfoEl.className = "task-info";
+        taskInfoEl.innerHTML =  "<h3 class='task-name'>" + tasks[i].name + "</h3> <span class='task-type'>" + tasks[i].type + "</span>";
+        
+        listItemEl.appendChild(taskInfoEl);
+
+
+        taskActionsEl = createTaskActions(tasks[i].id);
+
+        listItemEl.appendChild(taskActionsEl);
+        console.log(listItemEl);
+
+        if (tasks[i].status === "to do"){
+            listItemEl.querySelector("select[name='status-change']").selectedIndex = 0;
+            taskToDoEl.appendChild(listItemEl);
+            console.log(listItemEl);
+        }
+        else if(tasks[i].status === "in progress"){
+            listItemEl.querySelector("select[name='status-change']").selectedIndex = 1;
+            tasksInProgress.appendChild(listItemEl);
+        }
+        else if(tasks[i].status === "completed"){
+            listItemEl.querySelector("select[name='status-change']").selectedIndex = 2;
+            tasksCompleted.appendChild(listItemEl);
+        }
+        console.log(listItemEl)
+    }
+    taskIdCounter++
+    console.log(taskIdCounter)
+}
+
+loadTasks();
+
 pageContentEl.addEventListener("click",taskButtonHandler)
 formEl.addEventListener("submit", taskFormHandler)
 pageContentEl.addEventListener("change", taskStatusChangeHandler)
